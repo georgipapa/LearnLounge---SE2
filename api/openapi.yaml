@@ -1,0 +1,893 @@
+openapi: 3.0.3
+info:
+  title: Swagger LearnLounge - OpenAPI 3.0
+  description: learnlounge
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: info@learnlounge.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+servers:
+- url: /
+security:
+- api_key: []
+tags:
+- name: user
+  description: Operations about the user
+- name: course
+  description: Operations related to courses
+- name: Payment
+  description: Operations related to payment
+- name: Report
+  description: Operations related to the report form
+paths:
+  /user/{userId}/info:
+    put:
+      tags:
+      - user
+      summary: Edit personal information
+      description: Edit personal information for a specific user.
+      operationId: edit_personal_information
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/User'
+      responses:
+        "200":
+          description: User information updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      security:
+      - learnlounge_auth:
+        - write:user
+      x-openapi-router-controller: swagger_server.controllers.user_controller
+      x-swagger-router-controller: User
+    post:
+      tags:
+      - user
+      summary: Enter personal information
+      description: |
+        A user must be able to Enter his personal information
+      operationId: enter_personal_information
+      parameters:
+      - name: userId
+        in: path
+        description: The unique ID of the user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/User'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      security:
+      - learnlounge_auth:
+        - write:user
+      x-openapi-router-controller: swagger_server.controllers.user_controller
+      x-swagger-router-controller: User
+  /user/{userId}/courses:
+    post:
+      tags:
+      - user
+      summary: Enroll in a course
+      description: Enroll the user in a new course.
+      operationId: enroll_in_course
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Course'
+      responses:
+        "200":
+          description: Default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+      x-openapi-router-controller: swagger_server.controllers.user_controller
+      x-swagger-router-controller: User
+  /user/{userId}/courses/{courseId}:
+    delete:
+      tags:
+      - user
+      summary: Unenroll from a course
+      description: Unenroll the user from a course.
+      operationId: unenroll_from_course
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: courseId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+      x-openapi-router-controller: swagger_server.controllers.user_controller
+      x-swagger-router-controller: User
+  /courses/create:
+    post:
+      tags:
+      - course
+      summary: Create your own course
+      description: Create a course
+      operationId: create_course
+      requestBody:
+        $ref: '#/components/requestBodies/Course'
+      responses:
+        "200":
+          description: Course created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+      security:
+      - learnlounge_auth:
+        - write:course
+      x-openapi-router-controller: swagger_server.controllers.course_controller
+      x-swagger-router-controller: Course
+  /courses/teaching/{courseId}/edit:
+    put:
+      tags:
+      - course
+      summary: Edit your course's information
+      description: Edit your course as a teacher
+      operationId: edit_course
+      parameters:
+      - name: courseId
+        in: path
+        description: The unique ID of the course
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Course'
+      responses:
+        "200":
+          description: Saved changes successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+      security:
+      - learnlounge_auth:
+        - write:course
+      x-openapi-router-controller: swagger_server.controllers.course_controller
+      x-swagger-router-controller: Course
+    delete:
+      tags:
+      - course
+      summary: Delete your course
+      description: Delete your course as a teacher.
+      operationId: delete_course
+      parameters:
+      - name: courseId
+        in: path
+        description: The unique ID of the course
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Deleted course successfully
+      security:
+      - learnlounge_auth:
+        - write:course
+      x-openapi-router-controller: swagger_server.controllers.course_controller
+      x-swagger-router-controller: Course
+  /courses/{courseId}/connect:
+    post:
+      tags:
+      - course
+      summary: Connect to the course’s voice and video channels
+      description: Connect to the course’s voice and video channels
+      operationId: connect_to_course
+      parameters:
+      - name: courseId
+        in: path
+        description: The unique ID of the course
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Connected to the course successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+      security:
+      - learnlounge_auth:
+        - write:course
+      x-openapi-router-controller: swagger_server.controllers.course_controller
+      x-swagger-router-controller: Course
+  /courses/{courseId}/live:
+    get:
+      tags:
+      - course
+      summary: Watch the live lecture
+      description: Watch the live lecture of the course
+      operationId: watch_live_lecture
+      parameters:
+      - name: courseId
+        in: path
+        description: The unique ID of the course
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Watching live lecture
+          content:
+            application/json:
+              schema:
+                type: object
+                x-content-type: application/json
+      security:
+      - learnlounge_auth:
+        - read:course
+      x-openapi-router-controller: swagger_server.controllers.course_controller
+      x-swagger-router-controller: Course
+  /courses/{courseId}/text:
+    post:
+      tags:
+      - course
+      summary: Write to the text channels
+      description: Write messages to the course’s text channels
+      operationId: write_to_text_channels
+      parameters:
+      - name: courseId
+        in: path
+        description: The unique ID of the course
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: Message to send
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/courseId_text_body'
+        required: true
+      responses:
+        "200":
+          description: Message sent successfully
+      security:
+      - learnlounge_auth:
+        - write:course
+      x-openapi-router-controller: swagger_server.controllers.course_controller
+      x-swagger-router-controller: Course
+  /courses/{courseId}/files:
+    get:
+      tags:
+      - course
+      summary: Download course files
+      description: Download files associated with the course
+      operationId: download_course_files
+      parameters:
+      - name: courseId
+        in: path
+        description: The unique ID of the course
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Files downloaded successfully
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+                x-content-type: application/octet-stream
+      security:
+      - learnlounge_auth:
+        - read:course
+      x-openapi-router-controller: swagger_server.controllers.course_controller
+      x-swagger-router-controller: Course
+  /courses/{courseId}/review:
+    post:
+      tags:
+      - course
+      summary: Review the teacher’s performance
+      description: Submit a review of the teacher’s performance
+      operationId: review_teacher
+      parameters:
+      - name: courseId
+        in: path
+        description: The unique ID of the course
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Review'
+      responses:
+        "200":
+          description: Review submitted successfully
+      security:
+      - learnlounge_auth:
+        - write:course
+      x-openapi-router-controller: swagger_server.controllers.course_controller
+      x-swagger-router-controller: Course
+  /courses/search:
+    post:
+      tags:
+      - course
+      summary: Search Courses based on title and categories
+      description: Search Courses
+      operationId: search_courses
+      requestBody:
+        $ref: '#/components/requestBodies/SearchCourses'
+      responses:
+        "200":
+          description: List of classes that correspond to the keywords
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+      x-openapi-router-controller: swagger_server.controllers.course_controller
+      x-swagger-router-controller: Course
+  /courses/{courseId}/pay:
+    post:
+      tags:
+      - Payment
+      summary: Pay for a course
+      description: "If the course is not free, the student can pay for it"
+      operationId: courses_course_id_pay_post
+      parameters:
+      - name: courseId
+        in: path
+        description: The unique ID of the course
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Payment'
+      responses:
+        "200":
+          description: Successful Payment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+      x-openapi-router-controller: swagger_server.controllers.payment_controller
+      x-swagger-router-controller: Payment
+  /report:
+    post:
+      tags:
+      - Report
+      summary: Contact system developers
+      description: "The user is given the opportunity to communicate with the designers\
+        \ so that they can be facilitated in case they encounter a difficulty, suggest\
+        \ changes to system upgrades and report a bug or inappropriate content."
+      operationId: report_post
+      requestBody:
+        $ref: '#/components/requestBodies/Report'
+      responses:
+        "200":
+          description: Successful report submission
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+      x-openapi-router-controller: swagger_server.controllers.report_controller
+      x-swagger-router-controller: Report
+  /courses/{courseId}:
+    get:
+      tags:
+      - course
+      summary: Get course details
+      description: "The user should be able to view the details of a course before\
+        \ choosing to enroll in the course. This includes the duration of the course,\
+        \ the schedule of the course, the content to be covered, the pass rate of\
+        \ the students, the name of the teacher, the price (if any) and other relevant\
+        \ information deemed necessary by the teacher"
+      operationId: get_course_details
+      parameters:
+      - name: courseId
+        in: path
+        description: The ID of the course
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+      security:
+      - learnlounge_auth:
+        - read:course
+      x-openapi-router-controller: swagger_server.controllers.course_controller
+      x-swagger-router-controller: Course
+  /courses/{courseId}/certificate:
+    post:
+      tags:
+      - course
+      summary: Issue course completion certificate
+      description: "The teacher should be able to provide the student with a certificate\
+        \ that the student has successfully completed the course. This certificate\
+        \ may include the necessary details such as the title of the course, the student's\
+        \ name, the date of completion, the grade and other relevant details. In addition,\
+        \ the student's success in the course shall be added to the student's profile."
+      operationId: issue_certificate
+      parameters:
+      - name: courseId
+        in: path
+        description: The ID of the course
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/Certificate'
+      responses:
+        "200":
+          description: Certificate issued successfully
+      x-openapi-router-controller: swagger_server.controllers.course_controller
+      x-swagger-router-controller: Course
+  /user/{userId}:
+    get:
+      tags:
+      - user
+      summary: Get user profile
+      description: "The logged-in user should be able to view another user's profile,\
+        \ including personal information and information such as the courses they\
+        \ have taken or taught."
+      operationId: get_user
+      parameters:
+      - name: userId
+        in: path
+        description: The unique ID of the user
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      security:
+      - learnlounge_auth:
+        - read:user
+      x-openapi-router-controller: swagger_server.controllers.user_controller
+      x-swagger-router-controller: User
+components:
+  schemas:
+    User:
+      required:
+      - country
+      - dateOfBirth
+      - firstName
+      - gender
+      - lastName
+      - username
+      type: object
+      properties:
+        userId:
+          type: integer
+          format: int64
+        username:
+          type: string
+        title:
+          type: string
+        firstName:
+          type: string
+        middleName:
+          type: string
+        lastName:
+          type: string
+        gender:
+          type: string
+        rating:
+          type: number
+        country:
+          type: string
+        languages:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        specialization:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        certificates:
+          type: array
+          items:
+            $ref: '#/components/schemas/Certificate'
+        coursesAttended:
+          type: array
+          items:
+            $ref: '#/components/schemas/Course'
+        coursesTaught:
+          type: array
+          items:
+            $ref: '#/components/schemas/Course'
+        otherRelevantInformation:
+          type: array
+          items:
+            type: string
+      example:
+        lastName: lastName
+        country: country
+        gender: gender
+        languages:
+        - languages
+        - languages
+        rating: 6.027456183070403
+        description: description
+        dateOfBirth: 2000-01-23T00:00:00.000Z
+        otherRelevantInformation:
+        - otherRelevantInformation
+        - otherRelevantInformation
+        title: title
+        userId: 0
+        firstName: firstName
+        coursesTaught:
+        - null
+        - null
+        certificates:
+        - courseName: courseName
+          teacherName: teacherName
+          certificateId: 1
+          studentName: studentName
+          grade: grade
+          completionDate: 2000-01-23T00:00:00.000Z
+          otherRelevantInformation:
+          - otherRelevantInformation
+          - otherRelevantInformation
+        - courseName: courseName
+          teacherName: teacherName
+          certificateId: 1
+          studentName: studentName
+          grade: grade
+          completionDate: 2000-01-23T00:00:00.000Z
+          otherRelevantInformation:
+          - otherRelevantInformation
+          - otherRelevantInformation
+        specialization: specialization
+        middleName: middleName
+        coursesAttended:
+        - summary: "This course introduces techniques for designing and developing\
+            \ small to medium software programs, covering the software lifecycle,\
+            \ user requirements, specification, design and implementation."
+          schedule: 2000-01-23T04:56:07.000Z
+          image: ""
+          endDate: 2024-05-31T00:00:00.000Z
+          successRate: 95
+          price: 10
+          name: Software Engineering I
+          id: 17
+          customInfo: customInfo
+        - summary: "This course introduces techniques for designing and developing\
+            \ small to medium software programs, covering the software lifecycle,\
+            \ user requirements, specification, design and implementation."
+          schedule: 2000-01-23T04:56:07.000Z
+          image: ""
+          endDate: 2024-05-31T00:00:00.000Z
+          successRate: 95
+          price: 10
+          name: Software Engineering I
+          id: 17
+          customInfo: customInfo
+        username: username
+    Course:
+      required:
+      - endDate
+      - name
+      - price
+      - schedule
+      - summary
+      type: object
+      properties:
+        name:
+          type: string
+          example: Software Engineering I
+        id:
+          type: integer
+          format: int64
+          example: 17
+        summary:
+          type: string
+          example: "This course introduces techniques for designing and developing\
+            \ small to medium software programs, covering the software lifecycle,\
+            \ user requirements, specification, design and implementation."
+        schedule:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          description: date
+          example: 2024-05-31T00:00:00.000Z
+        price:
+          type: integer
+          format: int64
+          example: 10
+        customInfo:
+          type: string
+        successRate:
+          type: integer
+          format: int64
+          example: 95
+        image:
+          type: string
+          format: binary
+      example:
+        summary: "This course introduces techniques for designing and developing small\
+          \ to medium software programs, covering the software lifecycle, user requirements,\
+          \ specification, design and implementation."
+        schedule: 2000-01-23T04:56:07.000Z
+        image: ""
+        endDate: 2024-05-31T00:00:00.000Z
+        successRate: 95
+        price: 10
+        name: Software Engineering I
+        id: 17
+        customInfo: customInfo
+    Payment:
+      required:
+      - amount
+      - paymentMethod
+      type: object
+      properties:
+        amount:
+          type: number
+          description: Amount to be paid
+          format: float
+        paymentMethod:
+          type: string
+          description: "Payment Method, credit card, paypal, etc."
+        ispaid:
+          type: boolean
+          description: Check if the payment is completed
+        reason:
+          type: string
+      example:
+        reason: reason
+        amount: 0.8008282
+        ispaid: true
+        paymentMethod: paymentMethod
+    Report:
+      required:
+      - email
+      - message
+      - name
+      - typeOfReport
+      type: object
+      properties:
+        email:
+          type: string
+          description: The user's email
+        name:
+          type: string
+          description: The user's name
+        typeOfReport:
+          type: string
+          description: The type of report that will be submitted
+        message:
+          type: string
+          description: The body of the report
+      example:
+        typeOfReport: typeOfReport
+        name: name
+        message: message
+        email: email
+    Certificate:
+      type: object
+      properties:
+        certificateId:
+          type: integer
+        courseName:
+          type: string
+        studentName:
+          type: string
+        teacherName:
+          type: string
+        completionDate:
+          type: string
+          format: date
+        grade:
+          type: string
+        otherRelevantInformation:
+          type: array
+          items:
+            type: string
+      example:
+        courseName: courseName
+        teacherName: teacherName
+        certificateId: 1
+        studentName: studentName
+        grade: grade
+        completionDate: 2000-01-23T00:00:00.000Z
+        otherRelevantInformation:
+        - otherRelevantInformation
+        - otherRelevantInformation
+    SearchCourses:
+      type: object
+      properties:
+        keyword:
+          type: string
+          example: software
+    Review:
+      type: object
+      properties:
+        rating:
+          type: integer
+          format: int32
+          example: 5
+        comment:
+          type: string
+          example: Excellent course and teaching
+    inline_response_200:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Connected to the course’s voice and video channels
+      example:
+        message: Connected to the course’s voice and video channels
+    courseId_text_body:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Your message here
+    inline_response_200_1:
+      type: object
+      properties:
+        courses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Course'
+      example:
+        courses:
+        - summary: "This course introduces techniques for designing and developing\
+            \ small to medium software programs, covering the software lifecycle,\
+            \ user requirements, specification, design and implementation."
+          schedule: 2000-01-23T04:56:07.000Z
+          image: ""
+          endDate: 2024-05-31T00:00:00.000Z
+          successRate: 95
+          price: 10
+          name: Software Engineering I
+          id: 17
+          customInfo: customInfo
+        - summary: "This course introduces techniques for designing and developing\
+            \ small to medium software programs, covering the software lifecycle,\
+            \ user requirements, specification, design and implementation."
+          schedule: 2000-01-23T04:56:07.000Z
+          image: ""
+          endDate: 2024-05-31T00:00:00.000Z
+          successRate: 95
+          price: 10
+          name: Software Engineering I
+          id: 17
+          customInfo: customInfo
+  requestBodies:
+    User:
+      description: User model
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+      required: true
+    Course:
+      description: Course object that needs to be added or updated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Course'
+      required: true
+    Payment:
+      description: Payment request model
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Payment'
+      required: true
+    Report:
+      description: Report request model
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Report'
+      required: true
+    Certificate:
+      description: Issue a certificate
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Certificate'
+    SearchCourses:
+      description: Search a course by keyword
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SearchCourses'
+    Review:
+      description: Review details
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Review'
+      required: true
+  securitySchemes:
+    learnlounge_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://learnlounge.swagger.io/oauth/authorize
+          scopes:
+            write:course: Edit your course
+            read:course: View course details
+            write:user: Edit your user profile
+            read:user: View a user profile
+      x-tokenInfoFunc: swagger_server.controllers.authorization_controller.check_learnlounge_auth
+      x-scopeValidateFunc: swagger_server.controllers.authorization_controller.validate_scope_learnlounge_auth
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
+      x-apikeyInfoFunc: swagger_server.controllers.authorization_controller.check_api_key
