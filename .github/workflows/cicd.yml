@@ -17,10 +17,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Grant execute permissions to c8 and ava
-        run: |
-          chmod +x ./node_modules/.bin/c8
-          chmod +x ./node_modules/.bin/ava
+#      - name: Grant execute permissions to c8 and ava
+#        run: |
+#          chmod +x ./node_modules/.bin/c8
+#          chmod +x ./node_modules/.bin/ava
 
       - name: Run tests
         run: npm run test
