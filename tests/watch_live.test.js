@@ -1,7 +1,7 @@
 const test = require('ava');
 const http = require('http');
 const got = require('got');
-const app = require('../index'); // Adjust the path as necessary
+const app = require('../index');
 
 test.before(async (t) => {
     t.context.server = http.createServer(app);
@@ -18,7 +18,7 @@ test.serial('GET /courses/:courseId/live should return live lecture details', as
     const { statusCode, body } = await t.context.got.get('courses/13/live');
 
     t.is(statusCode, 200);
-    t.deepEqual(body, {}); // The response body is expected to be empty
+    t.deepEqual(body, {});
 });
 
 test('GET /user/:userId should return 404 for whitespace-only userId', async (t) => {

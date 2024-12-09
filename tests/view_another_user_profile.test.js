@@ -1,7 +1,7 @@
 const test = require('ava');
 const http = require('http');
 const got = require('got');
-const app = require('../index'); // Adjust the path as necessary
+const app = require('../index');
 
 test.before(async (t) => {
     t.context.server = http.createServer(app);
@@ -28,7 +28,7 @@ test.serial('GET /user/:userId should return user details', async (t) => {
         rating: 6.027456183070403,
         description: 'description',
         specialization: 'specialization',
-    }); // Match expected key fields
+    });
 });
 
 test.serial('GET /user/:userId should return 404 for invalid userId', async (t) => {

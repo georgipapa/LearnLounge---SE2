@@ -1,7 +1,7 @@
 const test = require('ava');
 const http = require('http');
 const got = require('got');
-const app = require('../index'); // Adjust the path as necessary
+const app = require('../index');
 
 test.before(async (t) => {
     t.context.server = http.createServer(app);
@@ -17,7 +17,7 @@ test.after.always((t) => {
 test.serial('POST /courses/:courseId/certificate should handle certificate issuance successfully', async (t) => {
     const { statusCode } = await t.context.got.post('courses/13/certificate', {
         headers: {
-            api_key: 'api_key', // Replace with your valid API key
+            api_key: 'api_key',
         },
         json: {
             courseName: 'courseName',
@@ -25,12 +25,12 @@ test.serial('POST /courses/:courseId/certificate should handle certificate issua
             certificateId: 1,
             studentName: 'studentName',
             grade: 'grade',
-            completionDate: '2000-01-23', // Corrected format
+            completionDate: '2000-01-23',
             otherRelevantInformation: ['otherRelevantInformation', 'otherRelevantInformation'],
         },
     });
 
-    t.is(statusCode, 200); // Ensure the server responds with 200 OK
+    t.is(statusCode, 200);
 });
 
 test.serial('POST /courses/:courseId/certificate with incorrect date format should return 400', async (t) => {

@@ -1,7 +1,7 @@
 const test = require('ava');
 const http = require('http');
 const got = require('got');
-const app = require('../index'); // Path to the modified index.js
+const app = require('../index');
 
 test.before(async (t) => {
     // Start the server before running tests
