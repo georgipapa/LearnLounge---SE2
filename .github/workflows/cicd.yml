@@ -22,8 +22,24 @@ jobs:
           chmod +x ./node_modules/.bin/c8
           chmod +x ./node_modules/.bin/ava
 
-      - name: Run tests
+      - name: Run Backend Tests
         run: npm run test
+
+      - name: Start Backend Server
+        run: |
+          npm start &
+          echo "Server started on PID: $!"
+          echo $! > server.pid
+        env:
+          NODE_ENV: test
+
+      - name: Run Cypress Tests
+        run: npx cypress run --spec "cypress/e2e/*.cy.js"
+
+      - name: Stop Backend Server
+        run: |
+          kill $(cat server.pid)
+          echo "Server stopped successfully."
 
   cd:
     runs-on: ubuntu-latest
