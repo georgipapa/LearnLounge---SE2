@@ -31,5 +31,5 @@ test.serial('POST /courses/:courseId/text should return 400 for invalid request 
 
     t.is(error.response.statusCode, 400);
     // Optionally verify the error message if your API provides one
-    t.is(error.response.body.message, 'Unexpected token \'n\', "#" is not valid JSON');
+    t.is(error.response.body.message, 'Unexpected token n in JSON at position 0');
 });
