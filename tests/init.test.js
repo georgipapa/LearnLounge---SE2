@@ -3,9 +3,10 @@ const test = require('ava');
 const got = require('got');
 const app = require("../index.js");
 
-// test("Test passes", (t) => {
-// 	t.pass();
-// });
+
+ test("Test passes", (t) => {
+ 	t.pass();
+});
 
 // test('Async', async t => {
 //     const res = Promise.resolve('test');
