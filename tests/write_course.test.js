@@ -1,7 +1,7 @@
 const test = require('ava');
 const http = require('http');
 const got = require('got');
-const app = require('../index'); // Adjust the path as necessary
+const app = require('../index');
 
 test.before(async (t) => {
     t.context.server = http.createServer(app);
@@ -25,11 +25,10 @@ test.serial('POST /courses/:courseId/text should handle message posting successf
 test.serial('POST /courses/:courseId/text should return 400 for invalid request body', async (t) => {
     const error = await t.throwsAsync(() =>
         t.context.got.post('courses/1/text', {
-            json: null, // Explicit invalid payload
+            json: null,
         })
     );
 
     t.is(error.response.statusCode, 400);
-    // Optionally verify the error message if your API provides one
     t.is(error.response.body.message, 'Unexpected token n in JSON at position 0');
 });
