@@ -77,9 +77,9 @@ test.serial('POST /courses/create without a correct form for price should return
     t.is(error.response.body.message, 'request.body.price should be integer');
 });
 
-test.serial('POST /courses/create - Missing required fields', async (t) => {
+test.serial('POST /courses/create - Missing required fields (eg name)', async (t) => {
   const payload = {
-      summary: 'Missing name field',
+      summary: 'This course introduces techniques for designing and developing small to medium software programs, covering the software lifecycle, user requirements, specification, design and implementation.',
       schedule: '2024-01-01T10:00:00Z',
       endDate: '2024-05-31T00:00:00Z',
       price: 100,
