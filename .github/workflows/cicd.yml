@@ -1,0 +1,52 @@
+name: cicd
+
+on: push
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Grant execute permissions to c8 and ava
+        run: |
+          chmod +x ./node_modules/.bin/c8
+          chmod +x ./node_modules/.bin/ava
+
+      - name: Run Backend Tests
+        run: npm run test
+
+      - name: Start Backend Server
+        run: |
+          npm start &
+          echo "Server started on PID: $!"
+          echo $! > server.pid
+        env:
+          NODE_ENV: test
+
+      - name: Run Cypress Tests
+        run: npx cypress run --spec "cypress/e2e/*.cy.js"
+
+      - name: Stop Backend Server
+        run: |
+          kill $(cat server.pid)
+          echo "Server stopped successfully."
+
+  cd:
+    runs-on: ubuntu-latest
+    needs: ci
+    steps:
+      - name: Deploy to Render
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.RENDER_SERVICE_KEY }}
+          api-key: ${{ secrets.API_KEY_ELEFTHERIA }}
