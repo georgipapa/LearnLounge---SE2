@@ -15,11 +15,11 @@ const handleResponse = (res, promise) => {
 };
 
 /**
- * Handles payment for a specific course
- * @param {Object} params - The parameters for the request
+ * Processes payment for a specific course
+ * @param {Object} params - Request parameters
  * @param {Object} params.res - Response object
- * @param {Object} params.body - Request body
- * @param {string} params.courseId - Course ID
+ * @param {Object} params.body - Payment details from the request body
+ * @param {string} params.courseId - ID of the course for which payment is being made
  */
 module.exports.courses_course_id_pay_post = function courses_course_id_pay_post({ res, body, courseId }) {
   handleResponse(res, Payment.courses_course_id_pay_post(body, courseId));
