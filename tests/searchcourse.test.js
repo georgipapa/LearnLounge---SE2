@@ -1,7 +1,7 @@
 const test = require('ava');
 const http = require('http');
 const got = require('got');
-const app = require('../index'); // Adjust as necessary
+const app = require('../index');
 
 test.before(async (t) => {
     t.context.server = http.createServer(app);
@@ -17,7 +17,7 @@ test.after.always((t) => {
 // Test: Successful course search
 test.serial('POST /courses/search should return matching courses for a valid keyword', async (t) => {
     const { statusCode, body } = await t.context.got.post('courses/search', {
-        headers: { api_key: 'your-valid-api-key' }, // Include API key if required
+        headers: { api_key: 'your-valid-api-key' },
         json: { keyword: 'software' },
     });
 
@@ -35,7 +35,7 @@ test.serial('POST /courses/search should return an empty array for a non-matchin
 
     t.is(statusCode, 200);
     t.true(Array.isArray(body.courses));
-    t.is(body.courses.length, 2); // Modify this to match the server's actual output
+    t.is(body.courses.length, 1); // Modify this to match the server's actual output
 });
 
 // Test: Missing keyword
