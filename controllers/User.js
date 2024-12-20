@@ -1,54 +1,71 @@
 'use strict';
 
-var utils = require('../utils/writer.js');
-var User = require('../service/UserService');
+const utils = require('../utils/writer.js');
+const User = require('../service/UserService');
 
-module.exports.edit_personal_information = function edit_personal_information (req, res, next, body, userId) {
-  User.edit_personal_information(body, userId)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+/**
+ * Utility function to handle response promises
+ * @param {Object} res - Response object
+ * @param {Promise} promise - The promise to handle
+ */
+const handleResponse = (res, promise) => {
+  promise
+    .then(response => utils.writeJson(res, response))
+    .catch(error => utils.writeJson(res, error));
 };
 
-module.exports.enroll_in_course = function enroll_in_course (req, res, next, body, userId) {
-  User.enroll_in_course(body, userId)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
-};
+module.exports = {
+  /**
+   * Edit personal information of a user
+   * @param {Object} params - Request parameters
+   * @param {Object} params.res - Response object
+   * @param {Object} params.body - Request body
+   * @param {string} params.userId - User ID
+   */
+  edit_personal_information({ res, body, userId }) {
+    handleResponse(res, User.edit_personal_information(body, userId));
+  },
 
-module.exports.enter_personal_information = function enter_personal_information (req, res, next, body, userId) {
-  User.enter_personal_information(body, userId)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
-};
+  /**
+   * Enroll a user in a course
+   * @param {Object} params - Request parameters
+   * @param {Object} params.res - Response object
+   * @param {Object} params.body - Request body
+   * @param {string} params.userId - User ID
+   */
+  enroll_in_course({ res, body, userId }) {
+    handleResponse(res, User.enroll_in_course(body, userId));
+  },
 
-module.exports.get_user = function get_user (req, res, next, userId) {
-  User.get_user(userId)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
-};
+  /**
+   * Enter personal information for a user
+   * @param {Object} params - Request parameters
+   * @param {Object} params.res - Response object
+   * @param {Object} params.body - Request body
+   * @param {string} params.userId - User ID
+   */
+  enter_personal_information({ res, body, userId }) {
+    handleResponse(res, User.enter_personal_information(body, userId));
+  },
 
-module.exports.unenroll_from_course = function unenroll_from_course (req, res, next, userId, courseId) {
-  User.unenroll_from_course(userId, courseId)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+  /**
+   * Get details of a user
+   * @param {Object} params - Request parameters
+   * @param {Object} params.res - Response object
+   * @param {string} params.userId - User ID
+   */
+  get_user({ res, userId }) {
+    handleResponse(res, User.get_user(userId));
+  },
+
+  /**
+   * Unenroll a user from a course
+   * @param {Object} params - Request parameters
+   * @param {Object} params.res - Response object
+   * @param {string} params.userId - User ID
+   * @param {string} params.courseId - Course ID
+   */
+  unenroll_from_course({ res, userId, courseId }) {
+    handleResponse(res, User.unenroll_from_course(userId, courseId));
+  }
 };
