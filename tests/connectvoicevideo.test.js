@@ -28,5 +28,5 @@ test.serial('POST /courses/:courseId/connect should return 400 for invalid reque
     );
 
     t.is(error.response.statusCode, 400);
-    t.is(error.response.body.message, 'Unexpected token n in JSON at position 0');
+    t.is(error.response.body.message, 'Unexpected token \'n\', "#" is not valid JSON');
 });
