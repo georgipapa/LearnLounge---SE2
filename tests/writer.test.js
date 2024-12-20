@@ -62,7 +62,7 @@ test('writeJson should handle null payload gracefully', (t) => {
 
     t.is(response.statusCode, 200);
     t.deepEqual(response.headers, { 'Content-Type': 'application/json' });
-    t.is(response.payload, undefined); // null should be converted to 'null'
+    t.is(response.payload, 'null'); // null should be converted to 'null'
 });
 
 // Test: writeJson with an instance of ResponsePayload
