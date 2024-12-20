@@ -4,16 +4,17 @@ const got = require('got');
 const app = require('../index.js');
 
 test.before(async (t) => {
-	t.context.server = http.createServer(app);
+    t.context.server = http.createServer(app);
     const server = t.context.server.listen();
     const { port } = server.address();
-	t.context.got = got.extend({ responseType: "json", prefixUrl: `http://localhost:${port}` });
+    t.context.got = got.extend({ responseType: "json", prefixUrl: `http://localhost:${port}` });
 });
 
 test.after.always((t) => {
-	t.context.server.close();
+    t.context.server.close();
 });
 
+// Test: Successfully edit a course
 test.serial('PUT /courses/teaching/:courseId/edit - Successfully edit your course', async (t) => {
     const { body, statusCode } = await t.context.got.put('courses/teaching/13/edit', {
         json: {
@@ -25,9 +26,11 @@ test.serial('PUT /courses/teaching/:courseId/edit - Successfully edit your cours
             customInfo: 'customInfo',
             successRate: 95,
         },
+        headers: { api_key: 'api_key' },
     });
 
-    t.is(statusCode, 200);
+    // Assertions
+    t.is(statusCode, 200, 'Expected status code 200 for successful edit');
     t.like(body, {
         name: 'Software Engineering I',
         summary: 'This course introduces techniques for designing and developing small to medium software programs, covering the software lifecycle, user requirements, specification, design and implementation.',
@@ -36,9 +39,10 @@ test.serial('PUT /courses/teaching/:courseId/edit - Successfully edit your cours
         price: 10,
         customInfo: 'customInfo',
         successRate: 95,
-    });
+    }, 'Response should match the updated course data');
 });
 
+// Test: Invalid data should return 400
 test.serial('PUT /courses/teaching/:courseId/edit - Invalid data should return 400', async (t) => {
     const payload = {
         name: 'Software Engineering I',
@@ -57,14 +61,18 @@ test.serial('PUT /courses/teaching/:courseId/edit - Invalid data should return 4
         })
     );
 
-    t.is(error.response.statusCode, 400);
-    t.is(error.response.body.message, 'request.body.price should be integer');
+    // Assertions
+    t.is(error.response.statusCode, 400, 'Expected status code 400 for invalid payload');
+    t.is(error.response.body.message, 'request.body.price should be integer', 'Expected error message for invalid price field');
 });
 
-
+// Test: Invalid courseId should return 404
 test.serial('GET /courses/:courseId - Invalid courseId should return 404', async (t) => {
     const invalidCourseId = "   "; // Whitespace-only input
 
     const response = await t.context.got(`courses/${invalidCourseId}`, { throwHttpErrors: false });
+
+    // Assertions
     t.is(response.statusCode, 404, `Expected 404 for invalid courseId: "${invalidCourseId}"`);
+    t.regex(response.body.message, /not found/i, 'Expected "not found" message for invalid courseId');
 });
