@@ -1,126 +1,131 @@
 'use strict';
 
-// Import necessary utilities and services
-var utils = require('../utils/writer.js');
-var Course = require('../service/CourseService');
+const utils = require('../utils/writer.js');
+const Course = require('../service/CourseService');
 
-// Handles connecting to a specific course
-module.exports.connect_to_course = function connect_to_course(req, res, next, courseId) {
-  Course.connect_to_course(courseId)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+/**
+ * Utility function to handle response promises
+ * @param {Object} res - Response object
+ * @param {Promise} promise - The promise to handle
+ */
+const handleResponse = (res, promise) => {
+  promise
+    .then(response => utils.writeJson(res, response))
+    .catch(error => utils.writeJson(res, error));
 };
 
-// Handles the creation of a new course
-module.exports.create_course = function create_course(req, res, next, body) {
-  Course.create_course(body)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
-};
+module.exports = {
+  /**
+   * Connect to a specific course
+   * @param {Object} params - Request parameters
+   * @param {Object} params.res - Response object
+   * @param {string} params.courseId - ID of the course to connect to
+   */
+  connect_to_course({ res, courseId }) {
+    handleResponse(res, Course.connect_to_course(courseId));
+  },
 
-// Handles the deletion of a specific course
-module.exports.delete_course = function delete_course(req, res, next, courseId) {
-  Course.delete_course(courseId)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
-};
+  /**
+   * Create a new course
+   * @param {Object} params - Request parameters
+   * @param {Object} params.res - Response object
+   * @param {Object} params.body - Details of the course to be created
+   */
+  create_course({ res, body }) {
+    handleResponse(res, Course.create_course(body));
+  },
 
-// Allows downloading files related to a course
-module.exports.download_course_files = function download_course_files(req, res, next, courseId) {
-  Course.download_course_files(courseId)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
-};
+  /**
+   * Delete a specific course
+   * @param {Object} params - Request parameters
+   * @param {Object} params.res - Response object
+   * @param {string} params.courseId - ID of the course to delete
+   */
+  delete_course({ res, courseId }) {
+    handleResponse(res, Course.delete_course(courseId));
+  },
 
-// Handles editing details of a specific course
-module.exports.edit_course = function edit_course(req, res, next, body, courseId) {
-  Course.edit_course(body, courseId)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
-};
+  /**
+   * Download files related to a specific course
+   * @param {Object} params - Request parameters
+   * @param {Object} params.res - Response object
+   * @param {string} params.courseId - ID of the course whose files are to be downloaded
+   */
+  download_course_files({ res, courseId }) {
+    handleResponse(res, Course.download_course_files(courseId));
+  },
 
-// Retrieves details of a specific course
-module.exports.get_course_details = function get_course_details(req, res, next, courseId) {
-  Course.get_course_details(courseId)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
-};
+  /**
+   * Edit details of a specific course
+   * @param {Object} params - Request parameters
+   * @param {Object} params.res - Response object
+   * @param {Object} params.body - Updated course details
+   * @param {string} params.courseId - ID of the course to edit
+   */
+  edit_course({ res, body, courseId }) {
+    handleResponse(res, Course.edit_course(body, courseId));
+  },
 
-// Issues a certificate for a course
-module.exports.issue_certificate = function issue_certificate(req, res, next, body, courseId) {
-  Course.issue_certificate(body, courseId)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
-};
+  /**
+   * Get details of a specific course
+   * @param {Object} params - Request parameters
+   * @param {Object} params.res - Response object
+   * @param {string} params.courseId - ID of the course to retrieve details of
+   */
+  get_course_details({ res, courseId }) {
+    handleResponse(res, Course.get_course_details(courseId));
+  },
 
-// Allows reviewing a teacher for a course
-module.exports.review_teacher = function review_teacher(req, res, next, body, courseId) {
-  Course.review_teacher(body, courseId)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
-};
+  /**
+   * Issue a certificate for a course
+   * @param {Object} params - Request parameters
+   * @param {Object} params.res - Response object
+   * @param {Object} params.body - Certificate issuance details
+   * @param {string} params.courseId - ID of the course for the certificate
+   */
+  issue_certificate({ res, body, courseId }) {
+    handleResponse(res, Course.issue_certificate(body, courseId));
+  },
 
-// Handles searching for courses
-module.exports.search_courses = function search_courses(req, res, next, body) {
-  Course.search_courses(body)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
-};
+  /**
+   * Review a teacher for a specific course
+   * @param {Object} params - Request parameters
+   * @param {Object} params.res - Response object
+   * @param {Object} params.body - Teacher review details
+   * @param {string} params.courseId - ID of the course the teacher is associated with
+   */
+  review_teacher({ res, body, courseId }) {
+    handleResponse(res, Course.review_teacher(body, courseId));
+  },
 
-// Handles live lecture streaming for a course
-module.exports.watch_live_lecture = function watch_live_lecture(req, res, next, courseId) {
-  Course.watch_live_lecture(courseId)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
-};
+  /**
+   * Search for courses based on criteria
+   * @param {Object} params - Request parameters
+   * @param {Object} params.res - Response object
+   * @param {Object} params.body - Search criteria
+   */
+  search_courses({ res, body }) {
+    handleResponse(res, Course.search_courses(body));
+  },
 
-// Enables writing to text channels for a course
-module.exports.write_to_text_channels = function write_to_text_channels(req, res, next, body, courseId) {
-  Course.write_to_text_channels(body, courseId)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+  /**
+   * Watch a live lecture for a specific course
+   * @param {Object} params - Request parameters
+   * @param {Object} params.res - Response object
+   * @param {string} params.courseId - ID of the course for the live lecture
+   */
+  watch_live_lecture({ res, courseId }) {
+    handleResponse(res, Course.watch_live_lecture(courseId));
+  },
+
+  /**
+   * Write to text channels for a specific course
+   * @param {Object} params - Request parameters
+   * @param {Object} params.res - Response object
+   * @param {Object} params.body - Message content
+   * @param {string} params.courseId - ID of the course whose text channel is to be written to
+   */
+  write_to_text_channels({ res, body, courseId }) {
+    handleResponse(res, Course.write_to_text_channels(body, courseId));
+  }
 };
