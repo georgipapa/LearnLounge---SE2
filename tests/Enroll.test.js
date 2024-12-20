@@ -3,18 +3,23 @@ const http = require('http');
 const got = require('got');
 const app = require('../index'); // Adjust the path as necessary
 
+// Setup: Start the HTTP server before tests
 test.before(async (t) => {
-    t.context.server = http.createServer(app);
-    const server = t.context.server.listen();
-    const { port } = server.address();
+    t.context.server = http.createServer(app); // Create an HTTP server using the app
+    const server = t.context.server.listen(); // Start the server
+    const { port } = server.address(); // Extract the server's port
+    // Configure `got` for JSON responses and the server's base URL
     t.context.got = got.extend({ responseType: 'json', prefixUrl: `http://localhost:${port}` });
 });
 
+// Cleanup: Stop the HTTP server after tests
 test.after.always((t) => {
-    t.context.server.close();
+    t.context.server.close(); // Ensure the server is closed
 });
 
+// Test: Successfully enroll a user in a course
 test.serial('POST /user/:userId/courses should enroll user in a course successfully', async (t) => {
+    // Make a POST request to enroll the user
     const { statusCode } = await t.context.got.post('user/123/courses', {
         headers: {
             api_key: 'api_key', // Replace with your valid API key
@@ -32,9 +37,11 @@ test.serial('POST /user/:userId/courses should enroll user in a course successfu
         },
     });
 
-    t.is(statusCode, 200); // Ensure the server responds with 200 OK
+    // Assert: Ensure the response status code is 200 (success)
+    t.is(statusCode, 200);
 });
 
+// Test: Attempting to enroll with missing required fields should return a 400 error
 test.serial('POST /user/:userId/courses with missing required fields should return 400', async (t) => {
     const payload = {
         schedule: "2000-01-23T04:56:07.000Z",
@@ -45,17 +52,22 @@ test.serial('POST /user/:userId/courses with missing required fields should retu
         id: 17,
         customInfo: "customInfo"
     };
+    // Attempt a POST request with incomplete data and expect an error
     const error = await t.throwsAsync(() =>
         t.context.got.post('user/123/courses', {
             headers: { api_key: 'api_key' },
             json: payload,
         })
     );
+
+    // Assert: Check for a 400 Bad Request status code
     t.is(error.response.statusCode, 400);
+    // Assert: Verify the error message mentions the missing `name` and `summary` fields
     t.regex(error.response.body.message, /should have required property 'name'/);
     t.regex(error.response.body.message, /should have required property 'summary'/);
 });
 
+// Test: Attempting to enroll without authorization should return a 401 error
 test.serial('POST /user/:userId/courses without authorization should return 401', async (t) => {
     const payload = {
         summary: "This course introduces techniques for designing and developing small to medium software programs, covering the software lifecycle, user requirements, specification, design and implementation.",
@@ -68,11 +80,15 @@ test.serial('POST /user/:userId/courses without authorization should return 401'
         id: 17,
         customInfo: "customInfo"
     };
+    // Attempt a POST request without providing an API key and expect an error
     const error = await t.throwsAsync(() =>
         t.context.got.post('user/123/courses', {
             json: payload,
         })
     );
+
+    // Assert: Check for a 401 Unauthorized status code
     t.is(error.response.statusCode, 401);
+    // Assert: Verify the error message indicates the missing 'api_key' header
     t.is(error.response.body.message, "'api_key' header required");
 });

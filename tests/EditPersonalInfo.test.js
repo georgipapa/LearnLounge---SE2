@@ -109,6 +109,7 @@ test.serial('PUT /user/:userId/info with invalid data should return 400', async 
         languages: ["English"], // Missing required fields like `firstName`, `lastName`, etc.
     };
 
+    // Expect an error response when sending invalid data
     const error = await t.throwsAsync(() =>
         got.put('user/13/info', {
             headers: { api_key: 'api_key' },
@@ -116,7 +117,9 @@ test.serial('PUT /user/:userId/info with invalid data should return 400', async 
         })
     );
 
-    t.is(error.response.statusCode, 400); // Expecting a 400 Bad Request
+    // Assert: Check the error status code is 400 (Bad Request)
+    t.is(error.response.statusCode, 400); 
+    // Assert: Validate the error message indicates missing fields
     t.regex(error.response.body.message, /should have required property 'firstName'/);
     t.regex(error.response.body.message, /should have required property 'lastName'/);
 });
