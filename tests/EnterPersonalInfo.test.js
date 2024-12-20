@@ -3,6 +3,7 @@ const http = require('http');
 const got = require('got');
 const app = require('../index'); // Adjust the path to your app entry file
 
+// Setup: Start the server before tests
 test.before(async (t) => {
     t.context.server = http.createServer(app);
     const server = t.context.server.listen();
@@ -10,10 +11,12 @@ test.before(async (t) => {
     t.context.got = got.extend({ responseType: 'json', prefixUrl: `http://localhost:${port}` });
 });
 
+// Cleanup: Stop the server after tests
 test.after.always((t) => {
     t.context.server.close();
 });
 
+// Test: Successfully save personal info
 test.serial('POST /user/:userId/info should save personal info successfully', async (t) => {
     const { statusCode, body } = await t.context.got.post('user/13/info', {
         headers: {
@@ -62,11 +65,13 @@ test.serial('POST /user/:userId/info should save personal info successfully', as
         },
     });
 
+    // Assertions
     t.is(statusCode, 200); // Ensure the server responds with 200 OK
-    t.is(body.userId, 0); // Ensure the user ID matches
-    t.is(body.firstName, "firstName"); // Verify some returned data
+    t.is(body.userId, 0); // Ensure the user ID matches the request
+    t.is(body.firstName, "firstName"); // Verify returned first name matches input
 });
 
+// Test: Missing required fields should return 400
 test.serial('POST /user/:userId/info with missing required fields should return 400', async (t) => {
     const payload = {
         country: "USA",
@@ -82,7 +87,8 @@ test.serial('POST /user/:userId/info with missing required fields should return 
         })
     );
 
+    // Assertions
     t.is(error.response.statusCode, 400); // Expecting a 400 Bad Request
-    t.regex(error.response.body.message, /should have required property 'firstName'/);
-    t.regex(error.response.body.message, /should have required property 'lastName'/);
+    t.regex(error.response.body.message, /should have required property 'firstName'/); // Check for missing `firstName`
+    t.regex(error.response.body.message, /should have required property 'lastName'/); // Check for missing `lastName`
 });
