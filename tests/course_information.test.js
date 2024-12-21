@@ -1,20 +1,9 @@
 const test = require('ava');
-const http = require('http');
 const got = require('got');
-const app = require('../index');
+const { setupServer, teardownServer } = require('./testHelper');
 
-test.before(async (t) => {
-    // Start the server before running tests
-    t.context.server = http.createServer(app);
-    const server = t.context.server.listen();
-    const { port } = server.address();
-    t.context.got = got.extend({ responseType: 'json', prefixUrl: `http://localhost:${port}` });
-});
-
-test.after.always((t) => {
-    // Stop the server after tests
-    t.context.server.close();
-});
+test.before(setupServer);
+test.after.always(teardownServer);
 
 test.serial('GET /courses/:courseId should return course details', async (t) => {
     const { body, statusCode } = await t.context.got('courses/17');

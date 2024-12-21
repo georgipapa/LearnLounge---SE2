@@ -1,20 +1,9 @@
 const test = require('ava');
-const http = require('http');
 const got = require('got');
-const app = require('../index'); // Adjust the path to your app entry file
+const { setupServer, teardownServer } = require('./testHelper');
 
-// Setup: Start the server before tests
-test.before(async (t) => {
-    t.context.server = http.createServer(app);
-    const server = t.context.server.listen();
-    const { port } = server.address();
-    t.context.got = got.extend({ responseType: 'json', prefixUrl: `http://localhost:${port}` });
-});
-
-// Cleanup: Stop the server after tests
-test.after.always((t) => {
-    t.context.server.close();
-});
+test.before(setupServer);
+test.after.always(teardownServer);
 
 // Test: Successfully save personal info
 test.serial('POST /user/:userId/info should save personal info successfully', async (t) => {

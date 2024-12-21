@@ -1,23 +1,9 @@
-// Import necessary modules for the test
-const test = require('ava');  // Ava testing framework for defining tests
-const http = require('http');  // Node's HTTP module for server creation
-const got = require('got');  // Got library to make HTTP requests
-const app = require('../index');  // Import the app to be tested (adjust the path if necessary)
+const test = require('ava');
+const got = require('got');
+const { setupServer, teardownServer } = require('./testHelper');
 
-// Before hook to setup the testing environment
-test.before(async (t) => {
-    // Create an HTTP server using the app (e.g., Express or other)
-    t.context.server = http.createServer(app);
-    const server = t.context.server.listen();  // Start the server
-    const { port } = server.address();  // Get the assigned port number
-    // Extend Got to use the local server's base URL for requests
-    t.context.got = got.extend({ responseType: 'json', prefixUrl: `http://localhost:${port}` });
-});
-
-// After hook to close the server after tests are done
-test.after.always((t) => {
-    t.context.server.close();  // Close the server after all tests
-});
+test.before(setupServer);
+test.after.always(teardownServer);
 
 // Test case 1: GET request to retrieve live lecture details for a course
 test.serial('GET /courses/:courseId/live should return live lecture details', async (t) => {

@@ -1,27 +1,9 @@
 const test = require('ava');
-const http = require('http');
 const got = require('got');
-const app = require('../index'); // Adjust the path to your app entry file
+const { setupServer, teardownServer } = require('./testHelper');
 
-/**
- * Creates a test server and prepares a `got` client for making requests.
- */
-test.before(async (t) => {
-    const server = http.createServer(app);
-    t.context.server = server.listen();
-    const { port } = server.address();
-    t.context.got = got.extend({
-        responseType: 'json',
-        prefixUrl: `http://localhost:${port}`,
-    });
-});
-
-/**
- * Cleans up the test server after all tests have finished.
- */
-test.after.always((t) => {
-    t.context.server.close();
-});
+test.before(setupServer);
+test.after.always(teardownServer);
 
 /**
  * Generates a valid payload for updating user information.
