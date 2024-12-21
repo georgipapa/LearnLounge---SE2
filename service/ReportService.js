@@ -8,8 +8,8 @@
  * body Report Report request model
  * returns Report
  **/
-exports.report_post = function(body) {
-  return new Promise(function(resolve, reject) {
+exports.report_post = function(_body) {
+  return new Promise(function(resolve, _reject) {
     var examples = {};
     examples['application/json'] = {
   "typeOfReport" : "typeOfReport",
