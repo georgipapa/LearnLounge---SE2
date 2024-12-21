@@ -1,27 +1,39 @@
 const test = require('ava');
-const got = require('got');
 const { setupServer, teardownServer } = require('./testHelper');
 
 test.before(setupServer);
 test.after.always(teardownServer);
-
 /**
- * Generates a valid payload for updating user information.
- * @returns {Object} A valid payload.
+ * Generates a base payload for user information.
+ * This allows reuse and customization for different scenarios.
+ * @returns {Object} Base payload with default user information.
  */
-function generateValidUserPayload() {
+function generateBaseUserPayload() {
     return {
+        firstName: "John",
         lastName: "Doe",
+        middleName: "Michael",
+        username: "johndoe123",
         country: "USA",
         gender: "Male",
         languages: ["English", "Spanish"],
         rating: 4.8,
         description: "Experienced software engineer.",
         dateOfBirth: "1990-05-15",
-        otherRelevantInformation: ["Loves teaching", "Team player"],
         title: "Mr.",
         userId: 13,
-        firstName: "John",
+        specialization: "Software Engineering",
+    };
+}
+
+/**
+ * Adds courses taught by the user to the payload.
+ * @param {Object} payload - The base user payload.
+ * @returns {Object} Updated payload with courses taught.
+ */
+function addCoursesTaught(payload) {
+    return {
+        ...payload,
         coursesTaught: [
             {
                 name: "Advanced Programming",
@@ -32,6 +44,17 @@ function generateValidUserPayload() {
                 price: 150,
             },
         ],
+    };
+}
+
+/**
+ * Adds certificates earned by the user to the payload.
+ * @param {Object} payload - The base user payload.
+ * @returns {Object} Updated payload with certificates.
+ */
+function addCertificates(payload) {
+    return {
+        ...payload,
         certificates: [
             {
                 courseName: "Data Science Basics",
@@ -43,23 +66,42 @@ function generateValidUserPayload() {
                 otherRelevantInformation: ["Certificate of Completion"],
             },
         ],
-        specialization: "Software Engineering",
-        middleName: "Michael",
+    };
+}
+
+/**
+ * Adds courses attended by the user to the payload.
+ * @param {Object} payload - The base user payload.
+ * @returns {Object} Updated payload with attended courses.
+ */
+function addCoursesAttended(payload) {
+    return {
+        ...payload,
         coursesAttended: [
             {
+                name: "Software Engineering Basics",
                 summary: "Basic Software Engineering Concepts",
                 schedule: "2022-02-01T10:00:00.000Z",
-                image: "",
                 endDate: "2022-06-01T00:00:00.000Z",
                 successRate: 95,
                 price: 0,
-                name: "Software Engineering Basics",
                 id: 5,
                 customInfo: "Online course",
             },
         ],
-        username: "johndoe123",
     };
+}
+
+/**
+ * Generates a full valid payload for updating user information.
+ * Combines base payload with additional data like courses, certificates, etc.
+ * @returns {Object} A complete payload for user updates.
+ */
+function generateValidUserPayload() {
+    let payload = generateBaseUserPayload();
+    payload = addCoursesTaught(payload);
+    payload = addCertificates(payload);
+    return addCoursesAttended(payload);
 }
 
 /**
@@ -75,7 +117,7 @@ test.serial('PUT /user/:userId/info should update personal info successfully', a
     });
 
     t.is(statusCode, 200); // Ensure the server responds with 200 OK
-    t.is(body.lastName, "lastName"); // Verify returned data matches the request
+    t.is(body.lastName, "lastName");    // Verify returned data matches the request
     t.is(body.firstName, "firstName");
     t.deepEqual(body.coursesTaught[0], null);
 });
