@@ -19,8 +19,8 @@ const courseExample = {
  * courseId String The unique ID of the course
  * returns inline_response_200
  **/
-exports.connect_to_course = function(courseId) {
-  return new Promise(function(resolve, reject) {
+exports.connect_to_course = function(_courseId) {
+  return new Promise(function(resolve, _reject) {
     var examples = {};
     examples['application/json'] = {
       "message": "Connected to the course’s voice and video channels"
@@ -39,8 +39,8 @@ exports.connect_to_course = function(courseId) {
  * body Course Course object that needs to be added or updated
  * returns Course
  **/
-exports.create_course = function(body) {
-  return new Promise(function(resolve, reject) {
+exports.create_course = function(_body) {
+  return new Promise(function(resolve, _reject) {
     resolve(courseExample);
   });
 }
@@ -51,8 +51,8 @@ exports.create_course = function(body) {
  * courseId String The unique ID of the course
  * no response value expected for this operation
  **/
-exports.delete_course = function(courseId) {
-  return new Promise(function(resolve, reject) {
+exports.delete_course = function(_courseId) {
+  return new Promise(function(resolve, _reject) {
     resolve();
   });
 }
@@ -63,8 +63,8 @@ exports.delete_course = function(courseId) {
  * courseId String The unique ID of the course
  * returns byte[]
  **/
-exports.download_course_files = function(courseId) {
-  return new Promise(function(resolve, reject) {
+exports.download_course_files = function(_courseId) {
+  return new Promise(function(resolve, _reject) {
     var examples = {};
     examples['application/json'] = "";
     if (Object.keys(examples).length > 0) {
@@ -82,8 +82,8 @@ exports.download_course_files = function(courseId) {
  * courseId String The unique ID of the course
  * returns Course
  **/
-exports.edit_course = function(body, courseId) {
-  return new Promise(function(resolve, reject) {
+exports.edit_course = function(_body, _courseId) {
+  return new Promise(function(resolve, _reject) {
     resolve(courseExample);
   });
 }
@@ -94,8 +94,8 @@ exports.edit_course = function(body, courseId) {
  * courseId String The ID of the course
  * returns Course
  **/
-exports.get_course_details = function(courseId) {
-  return new Promise(function(resolve, reject) {
+exports.get_course_details = function(_courseId) {
+  return new Promise(function(resolve, _reject) {
     resolve(courseExample);
   });
 }
@@ -107,8 +107,8 @@ exports.get_course_details = function(courseId) {
  * courseId String The ID of the course
  * no response value expected for this operation
  **/
-exports.issue_certificate = function(body, courseId) {
-  return new Promise(function(resolve, reject) {
+exports.issue_certificate = function(_body, _courseId) {
+  return new Promise(function(resolve, _reject) {
     resolve();
   });
 }
@@ -120,8 +120,8 @@ exports.issue_certificate = function(body, courseId) {
  * courseId String The unique ID of the course
  * no response value expected for this operation
  **/
-exports.review_teacher = function(body, courseId) {
-  return new Promise(function(resolve, reject) {
+exports.review_teacher = function(_body, _courseId) {
+  return new Promise(function(resolve, _reject) {
     resolve();
   });
 }
@@ -132,8 +132,8 @@ exports.review_teacher = function(body, courseId) {
  * body SearchCourses Search a course by keyword (optional)
  * returns inline_response_200_1
  **/
-exports.search_courses = function(body) {
-  return new Promise(function(resolve, reject) {
+exports.search_courses = function(_body) {
+  return new Promise(function(resolve, _reject) {
     var examples = {};
     examples['application/json'] = {
       "courses": [courseExample]
@@ -152,8 +152,8 @@ exports.search_courses = function(body) {
  * courseId String The unique ID of the course
  * returns Object
  **/
-exports.watch_live_lecture = function(courseId) {
-  return new Promise(function(resolve, reject) {
+exports.watch_live_lecture = function(_courseId) {
+  return new Promise(function(resolve, _reject) {
     var examples = {};
     examples['application/json'] = {};
     if (Object.keys(examples).length > 0) {
@@ -171,8 +171,8 @@ exports.watch_live_lecture = function(courseId) {
  * courseId String The unique ID of the course
  * no response value expected for this operation
  **/
-exports.write_to_text_channels = function(body, courseId) {
-  return new Promise(function(resolve, reject) {
+exports.write_to_text_channels = function(_body, _courseId) {
+  return new Promise(function(resolve, _reject) {
     resolve();
   });
 }

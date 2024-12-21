@@ -9,8 +9,8 @@
  * courseId String The unique ID of the course
  * returns Payment
  **/
-exports.courses_course_id_pay_post = function(body,courseId) {
-  return new Promise(function(resolve, reject) {
+exports.courses_course_id_pay_post = function(_body,_courseId) {
+  return new Promise(function(resolve, _reject) {
     var examples = {};
     examples['application/json'] = {
   "reason" : "reason",
