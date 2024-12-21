@@ -1,21 +1,9 @@
 const test = require('ava');
-const http = require('http');
 const got = require('got');
-const app = require('../index'); // Adjust the path as necessary
+const { setupServer, teardownServer } = require('./testHelper');
 
-// Setup: Start the HTTP server before tests
-test.before(async (t) => {
-    t.context.server = http.createServer(app); // Create an HTTP server using the app
-    const server = t.context.server.listen(); // Start the server
-    const { port } = server.address(); // Extract the server's port
-    // Configure `got` for JSON responses and the server's base URL
-    t.context.got = got.extend({ responseType: 'json', prefixUrl: `http://localhost:${port}` });
-});
-
-// Cleanup: Stop the HTTP server after tests
-test.after.always((t) => {
-    t.context.server.close(); // Ensure the server is closed
-});
+test.before(setupServer);
+test.after.always(teardownServer);
 
 // Test: Successfully enroll a user in a course
 test.serial('POST /user/:userId/courses should enroll user in a course successfully', async (t) => {

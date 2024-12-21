@@ -1,23 +1,9 @@
-// Importing necessary modules for testing
-const test = require('ava');  // Ava testing framework for writing and running tests
-const http = require('http');  // HTTP module for creating an HTTP server
-const got = require('got');  // Got library to make HTTP requests
-const app = require('../index'); // Import the application (server) to be tested, adjust path as necessary
+const test = require('ava');
+const got = require('got');
+const { setupServer, teardownServer } = require('./testHelper');
 
-// Before hook - Setting up the testing environment
-test.before(async (t) => {
-    // Create an HTTP server and start listening on a random port
-    t.context.server = http.createServer(app);
-    const server = t.context.server.listen();
-    const { port } = server.address();  // Retrieve the port the server is listening on
-    // Create a custom Got instance for making HTTP requests to the local server
-    t.context.got = got.extend({ responseType: 'json', prefixUrl: `http://localhost:${port}` });
-});
-
-// After hook - Clean up after all tests are done
-test.after.always((t) => {
-    t.context.server.close();  // Close the server once all tests are finished
-});
+test.before(setupServer);
+test.after.always(teardownServer);
 
 // Test case 1: Successfully handling a payment for a course
 test.serial('POST /courses/:courseId/pay should handle payment successfully', async (t) => {

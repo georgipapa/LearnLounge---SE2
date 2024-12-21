@@ -1,18 +1,9 @@
 const test = require('ava');
-const http = require('http');
 const got = require('got');
-const app = require('../index'); // Adjust the path to your app entry file
+const { setupServer, teardownServer } = require('./testHelper');
 
-test.before(async (t) => {
-    t.context.server = http.createServer(app);
-    const server = t.context.server.listen();
-    const { port } = server.address();
-    t.context.got = got.extend({ responseType: 'json', prefixUrl: `http://localhost:${port}` });
-});
-
-test.after.always((t) => {
-    t.context.server.close();
-});
+test.before(setupServer);
+test.after.always(teardownServer);
 
 // Test: Successfully unenrolling from a course
 test.serial('DELETE /user/:userId/courses/:courseId should unenroll the user successfully', async (t) => {
