@@ -14,10 +14,11 @@ function isValidLength(field, maxLength) {
     return typeof field === 'string' && field.length <= maxLength;
 }
 
-module.exports.report_post = function report_post(_, res, __, body) {
+module.exports.report_post = function report_post(req, res, next, body) {
     // Extract fields
     const { typeOfReport, name, message, email } = body;
-
+    req=req;
+    next=next;
     // Validate missing fields
     if (!typeOfReport || !name || !message || !email) {
         return utils.writeJson(res, {

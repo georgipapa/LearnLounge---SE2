@@ -1,77 +1,9 @@
 const test = require('ava');
 const { setupServer, teardownServer } = require('./testHelper');
+const { generateBaseUserPayload, addCertificates, addCoursesAttended } = require('../utils/validUserPayload');
 
 test.before(setupServer);
 test.after.always(teardownServer);
-
-/**
- * Generates the base payload for user information.
- * This can be extended or customized as needed.
- * @returns {Object} The base user payload.
- */
-function generateBaseUserPayload() {
-    return {
-        firstName: "John",
-        lastName: "Doe",
-        middleName: "Michael",
-        username: "johndoe123",
-        country: "USA",
-        gender: "Male",
-        languages: ["English", "Spanish"],
-        rating: 4.8,
-        description: "Experienced software engineer.",
-        dateOfBirth: "1990-05-15",
-        title: "Mr.",
-        userId: 13,
-        specialization: "Software Engineering",
-    };
-}
-
-/**
- * Adds certificates to the base user payload.
- * @param {Object} payload - The base user payload.
- * @returns {Object} Updated payload with certificates included.
- */
-function addCertificates(payload) {
-    return {
-        ...payload,
-        certificates: [
-            {
-                courseName: "Advanced Algorithms",
-                teacherName: "Dr. Smith",
-                certificateId: 101,
-                studentName: "John Doe",
-                grade: "A+",
-                completionDate: "2020-12-15",
-                otherRelevantInformation: ["Certificate of Excellence"],
-            },
-        ],
-    };
-}
-
-/**
- * Adds attended courses to the base user payload.
- * @param {Object} payload - The base user payload.
- * @returns {Object} Updated payload with attended courses included.
- */
-function addCoursesAttended(payload) {
-    return {
-        ...payload,
-        coursesAttended: [
-            {
-                summary: "Introduction to Software Engineering",
-                schedule: "2023-02-15T10:00:00.000Z",
-                image: "",
-                endDate: "2023-06-15T00:00:00.000Z",
-                successRate: 100,
-                price: 0,
-                name: "Intro to SE",
-                id: 1,
-                customInfo: "Free course",
-            },
-        ],
-    };
-}
 
 /**
  * Generates a complete, valid user payload by combining the base payload
