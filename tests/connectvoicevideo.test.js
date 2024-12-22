@@ -1,5 +1,4 @@
 const test = require('ava');
-const got = require('got');
 const { setupServer, teardownServer } = require('./testHelper');
 
 test.before(setupServer);
@@ -9,7 +8,7 @@ test.after.always(teardownServer);
 test.serial('POST /courses/:courseId/connect - Successfully connect to a course\'s voice and video channels', async (t) => {
     const { statusCode } = await t.context.got.post('courses/13/connect', {
         headers: {
-            api_key: 'api_key', // Replace with your valid API key
+            api_key: 'api_key',
         },
     });
 

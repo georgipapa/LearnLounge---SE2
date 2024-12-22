@@ -14,7 +14,7 @@ function isValidLength(field, maxLength) {
     return typeof field === 'string' && field.length <= maxLength;
 }
 
-module.exports.report_post = function report_post(_req, res, _next, body) {
+module.exports.report_post = function report_post(_, res, __, body) {
     // Extract fields
     const { typeOfReport, name, message, email } = body;
 

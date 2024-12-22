@@ -103,16 +103,13 @@ function generateValidUserPayload() {
     payload = addCertificates(payload);
     return addCoursesAttended(payload);
 }
-
-/**
- * Test: Successful update of user information.
- */
+// Test: Successful update of user information
 test.serial('PUT /user/:userId/info should update personal info successfully', async (t) => {
     const { got } = t.context;
     const payload = generateValidUserPayload();
 
     const { statusCode, body } = await got.put('user/13/info', {
-        headers: { api_key: 'api_key' }, // Replace with your valid API key
+        headers: { api_key: 'api_key' },
         json: payload,
     });
 
@@ -122,9 +119,7 @@ test.serial('PUT /user/:userId/info should update personal info successfully', a
     t.deepEqual(body.coursesTaught[0], null);
 });
 
-/**
- * Test: Invalid data should return a 400 error.
- */
+// Test: Invalid data should return a 400 error
 test.serial('PUT /user/:userId/info with invalid data should return 400', async (t) => {
     const { got } = t.context;
     const invalidPayload = {

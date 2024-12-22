@@ -1,5 +1,4 @@
 const test = require('ava');
-const got = require('got');
 const { setupServer, teardownServer } = require('./testHelper');
 
 test.before(setupServer);

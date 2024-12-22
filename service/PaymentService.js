@@ -5,12 +5,10 @@
  * Pay for a course
  * If the course is not free, the student can pay for it
  *
- * body Payment Payment request model
- * courseId String The unique ID of the course
  * returns Payment
  **/
-exports.courses_course_id_pay_post = function(_body,_courseId) {
-  return new Promise(function(resolve, _reject) {
+exports.courses_course_id_pay_post = function() {
+  return new Promise(function(resolve, _) {
     var examples = {};
     examples['application/json'] = {
   "reason" : "reason",

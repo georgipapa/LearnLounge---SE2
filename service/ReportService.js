@@ -3,13 +3,13 @@
 
 /**
  * Contact system developers
- * The user is given the opportunity to communicate with the designers so that they can be facilitated in case they encounter a difficulty, suggest changes to system upgrades and report a bug or inappropriate content.
- *
- * body Report Report request model
+ * The user is given the opportunity to communicate with the designers so that they can be facilitated in case
+ * they encounter a difficulty, suggest changes to system upgrades and report a bug or inappropriate content.
+ * 
  * returns Report
  **/
-exports.report_post = function(_body) {
-  return new Promise(function(resolve, _reject) {
+exports.report_post = function() {
+  return new Promise(function(resolve, _) {
     var examples = {};
     examples['application/json'] = {
   "typeOfReport" : "typeOfReport",

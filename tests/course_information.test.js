@@ -1,14 +1,10 @@
 const test = require('ava');
-const got = require('got');
 const { setupServer, teardownServer } = require('./testHelper');
 
 test.before(setupServer);
 test.after.always(teardownServer);
 
-/**
- * Test: Fetch course details for a valid course ID.
- * Ensures the endpoint returns the correct course details with a 200 OK status.
- */
+// Test:  Successfully get course details
 test.serial('GET /courses/:courseId should return course details', async (t) => {
     const { body, statusCode } = await t.context.got('courses/17');
 
@@ -20,10 +16,7 @@ test.serial('GET /courses/:courseId should return course details', async (t) => 
     });
 });
 
-/**
- * Test: Attempt to fetch course details with an invalid course ID.
- * Ensures the endpoint returns a 404 Not Found error for invalid inputs.
- */
+// Test: Invalid courseId should return 404
 test.serial('GET /courses/:courseId should return 404 for invalid courseId', async (t) => {
     const invalidCourseId = "   "; // Whitespace-only input representing an invalid courseId
 

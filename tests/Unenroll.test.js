@@ -1,5 +1,4 @@
 const test = require('ava');
-const got = require('got');
 const { setupServer, teardownServer } = require('./testHelper');
 
 test.before(setupServer);
@@ -9,7 +8,7 @@ test.after.always(teardownServer);
 test.serial('DELETE /user/:userId/courses/:courseId should unenroll the user successfully', async (t) => {
     const { statusCode, body } = await t.context.got.delete('user/13/courses/13', {
         headers: {
-            api_key: 'api_key', // Replace with your valid API key
+            api_key: 'api_key',
         },
     });
 

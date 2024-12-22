@@ -62,11 +62,9 @@ function resolveExample(example) {
  * Edit personal information
  * Edit personal information for a specific user.
  *
- * body User User model
- * userId String 
  * returns User
  **/
-exports.edit_personal_information = function(body, userId) {
+exports.edit_personal_information = function() {
   return resolveExample(exampleUser);
 }
 
@@ -74,11 +72,9 @@ exports.edit_personal_information = function(body, userId) {
  * Enroll in a course
  * Enroll the user in a new course.
  *
- * body Course Course object that needs to be added or updated
- * userId String 
  * returns Course
  **/
-exports.enroll_in_course = function(body, userId) {
+exports.enroll_in_course = function() {
   return resolveExample(exampleCourse);
 }
 
@@ -86,22 +82,20 @@ exports.enroll_in_course = function(body, userId) {
  * Enter personal information
  * A user must be able to Enter his personal information 
  *
- * body User User model
- * userId String The unique ID of the user
  * returns User
  **/
-exports.enter_personal_information = function(body, userId) {
+exports.enter_personal_information = function() {
   return resolveExample(exampleUser);
 }
 
 /**
  * Get user profile
- * The logged-in user should be able to view another user's profile, including personal information and information such as the courses they have taken or taught.
+ * The logged-in user should be able to view another user's profile, 
+ * including personal information and information such as the courses they have taken or taught.
  *
- * userId String The unique ID of the user
  * returns User
  **/
-exports.get_user = function(userId) {
+exports.get_user = function() {
   return resolveExample(exampleUser);
 }
 
@@ -109,10 +103,8 @@ exports.get_user = function(userId) {
  * Unenroll from a course
  * Unenroll the user from a course.
  *
- * userId String 
- * courseId String 
  * returns Course
  **/
-exports.unenroll_from_course = function(userId, courseId) {
+exports.unenroll_from_course = function() {
   return resolveExample(exampleCourse);
 }

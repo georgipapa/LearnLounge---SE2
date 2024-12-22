@@ -1,11 +1,10 @@
 const test = require('ava');
-const got = require('got');
 const { setupServer, teardownServer } = require('./testHelper');
 
 test.before(setupServer);
 test.after.always(teardownServer);
 
-// Test case 1: Test for retrieving user details by valid userId
+// Test: Test for retrieving user details by valid userId
 test.serial('GET /user/:userId should return user details', async (t) => {
     // Send GET request to retrieve details of user with userId 0
     const { body, statusCode } = await t.context.got.get('user/0');
@@ -26,7 +25,7 @@ test.serial('GET /user/:userId should return user details', async (t) => {
     });
 });
 
-// Test case 2: Test for retrieving user details with invalid userId
+// Test: Test for retrieving user details with invalid userId
 test.serial('GET /user/:userId should return 404 for invalid userId', async (t) => {
     // Define an invalid userId (whitespace-only input)
     const invalidUserId = "   "; // Whitespace-only input

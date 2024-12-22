@@ -1,16 +1,15 @@
 const test = require('ava');
-const got = require('got');
 const { setupServer, teardownServer } = require('./testHelper');
 
 test.before(setupServer);
 test.after.always(teardownServer);
 
-// Test case 1: Successfully issuing a certificate
+// Test: Successfully issuing a certificate
 test.serial('POST /courses/:courseId/certificate should handle certificate issuance successfully', async (t) => {
     // Sending a POST request to issue a certificate for course 13
     const { statusCode } = await t.context.got.post('courses/13/certificate', {
         headers: {
-            api_key: 'api_key',  // Pass the API key in headers for authentication
+            api_key: 'api_key',
         },
         json: {  // Data to be sent in the request body
             courseName: 'courseName',
@@ -27,7 +26,7 @@ test.serial('POST /courses/:courseId/certificate should handle certificate issua
     t.is(statusCode, 200);
 });
 
-// Test case 2: Invalid date format should return 400
+// Test: Invalid date format should return 400
 test.serial('POST /courses/:courseId/certificate with incorrect date format should return 400', async (t) => {
     const payload = {
         courseName: 'courseName',
@@ -51,7 +50,7 @@ test.serial('POST /courses/:courseId/certificate with incorrect date format shou
     t.is(error.response.body.message, 'request.body.completionDate should match format "date"');
 });
 
-// Test case 3: Missing authorization should return 401
+// Test: Missing authorization should return 401
 test.serial('POST /courses/:courseId/certificate without authorization should return 401', async (t) => {
     const payload = {
         courseName: 'courseName',

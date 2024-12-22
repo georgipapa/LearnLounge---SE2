@@ -84,17 +84,14 @@ function generateValidUserPayload() {
     return addCoursesAttended(payload);
 }
 
-// Tests
-/**
- * Test: Successfully save personal info.
- */
+// Test: Successfully save personal info
 test.serial('POST /user/:userId/info should save personal info successfully', async (t) => {
     const { got } = t.context;
     const payload = generateValidUserPayload();
 
     const { statusCode, body } = await got.post('user/13/info', {
         headers: {
-            api_key: 'api_key', // Replace with your valid API key
+            api_key: 'api_key',
         },
         json: payload,
     });
@@ -105,9 +102,7 @@ test.serial('POST /user/:userId/info should save personal info successfully', as
     t.is(body.firstName, "firstName"); // Verify returned first name matches input
 });
 
-/**
- * Test: Missing required fields should return 400.
- */
+// Test: Missing required fields should return 400
 test.serial('POST /user/:userId/info with missing required fields should return 400', async (t) => {
     const { got } = t.context;
 

@@ -1,5 +1,4 @@
 const test = require('ava');
-const got = require('got');
 const { setupServer, teardownServer } = require('./testHelper');
 
 test.before(setupServer);
@@ -10,7 +9,7 @@ test.serial('POST /user/:userId/courses should enroll user in a course successfu
     // Make a POST request to enroll the user
     const { statusCode } = await t.context.got.post('user/123/courses', {
         headers: {
-            api_key: 'api_key', // Replace with your valid API key
+            api_key: 'api_key',
         },
         json: {
             summary: "This course introduces techniques for designing and developing small to medium software programs, covering the software lifecycle, user requirements, specification, design and implementation.",

@@ -1,5 +1,4 @@
 const test = require('ava');
-const got = require('got');
 const { setupServer, teardownServer } = require('./testHelper');
 
 test.before(setupServer);
@@ -9,7 +8,7 @@ test.after.always(teardownServer);
 test.serial('POST /courses/create - Successfully create a course', async (t) => {
     const { statusCode } = await t.context.got.post('courses/create', {
         headers: {
-            api_key: 'api_key',  // API key header
+            api_key: 'api_key',
         },
         json: {  // Course data
             name: 'Software Engineering I',
@@ -27,7 +26,7 @@ test.serial('POST /courses/create - Successfully create a course', async (t) => 
 test.serial('POST /courses/create - Successfully create a course with optional fields', async (t) => {
     const { statusCode } = await t.context.got.post('courses/create', {
         headers: {
-            api_key: 'api_key',  // API key header
+            api_key: 'api_key',
         },
         json: {  // Course data with optional fields
             name: 'Software Engineering I',
