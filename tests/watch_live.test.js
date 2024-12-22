@@ -1,11 +1,10 @@
 const test = require('ava');
-const got = require('got');
 const { setupServer, teardownServer } = require('./testHelper');
 
 test.before(setupServer);
 test.after.always(teardownServer);
 
-// Test case 1: GET request to retrieve live lecture details for a course
+// Test: GET request to retrieve live lecture details for a course
 test.serial('GET /courses/:courseId/live should return live lecture details', async (t) => {
     // Send GET request to /courses/13/live endpoint to get live lecture details
     const { statusCode, body } = await t.context.got.get('courses/13/live');
@@ -16,7 +15,7 @@ test.serial('GET /courses/:courseId/live should return live lecture details', as
     t.deepEqual(body, {});
 });
 
-// Test case 2: GET request with whitespace-only userId should return 404
+// Test: GET request with whitespace-only userId should return 404
 test('GET /user/:userId should return 404 for whitespace-only userId', async (t) => {
     // Define a userId consisting of only whitespace characters
     const userId = "   ";  // Whitespace-only input

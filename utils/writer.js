@@ -17,7 +17,7 @@ function determineResponseCode(arg1, arg2) {
 }
 
 // Helper function to determine response payload
-function determinePayload(arg1, arg2) {
+function determinePayload(arg1) {
   if (arg1 instanceof ResponsePayload) return arg1.payload;
   return arg1;
 }

@@ -1,16 +1,15 @@
 const test = require('ava');
-const got = require('got');
 const { setupServer, teardownServer } = require('./testHelper');
 
 test.before(setupServer);
 test.after.always(teardownServer);
 
-// Test case 1: Successfully handling a payment for a course
+// Test: Successfully handling a payment for a course
 test.serial('POST /courses/:courseId/pay should handle payment successfully', async (t) => {
     // Sending a POST request to handle payment for course 200
     const { statusCode } = await t.context.got.post('courses/200/pay', {
         headers: {
-            api_key: 'api_key',  // Send the API key in the request headers for authentication
+            api_key: 'api_key',
         },
         json: {  // Payment information to be included in the request body
             reason: 'Course fee payment',
@@ -24,7 +23,7 @@ test.serial('POST /courses/:courseId/pay should handle payment successfully', as
     t.is(statusCode, 200);
 });
 
-// Test case 2: Missing payment information should return 400
+// Test: Missing payment information should return 400
 test.serial('POST /courses/:courseId/pay with missing payment information should return 400', async (t) => {
     // Payload missing required fields like "reason", "amount", and "paymentMethod"
     const payload = {
@@ -43,7 +42,7 @@ test.serial('POST /courses/:courseId/pay with missing payment information should
     t.is(error.response.body.message, 'request.body should have required property \'amount\', request.body should have required property \'paymentMethod\'');
 });
 
-// Test case 3: Missing authorization header should return 401
+// Test: Missing authorization header should return 401
 test.serial('POST /courses/:courseId/pay without authorization should return 401', async (t) => {
     const payload = {
         reason: 'Course fee payment',
@@ -63,7 +62,7 @@ test.serial('POST /courses/:courseId/pay without authorization should return 401
     t.is(error.response.body.message, "'api_key' header required");
 });
 
-// Test case 4: Invalid amount format should return 400
+// Test: Invalid amount format should return 400
 test.serial('POST /courses/:courseId/pay with invalid amount should return 400', async (t) => {
     const payload = {
         reason: 'Course fee payment',

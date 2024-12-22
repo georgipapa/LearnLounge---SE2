@@ -1,11 +1,10 @@
 const test = require('ava');
-const got = require('got');
 const { setupServer, teardownServer } = require('./testHelper');
 
 test.before(setupServer);
 test.after.always(teardownServer);
 
-// Test 1: POST request to handle message posting successfully
+// Test: POST request to handle message posting successfully
 test.serial('POST /courses/:courseId/text should handle message posting successfully', async (t) => {
     // Send a POST request to the /courses/13/text endpoint with a sample message
     const { statusCode } = await t.context.got.post('courses/13/text', {
@@ -16,7 +15,7 @@ test.serial('POST /courses/:courseId/text should handle message posting successf
     t.is(statusCode, 200);
 });
 
-// Test 2: POST request with invalid request body should return 400
+// Test: POST request with invalid request body should return 400
 test.serial('POST /courses/:courseId/text should return 400 for invalid request body', async (t) => {
     // Send a POST request with an invalid (null) request body
     const error = await t.throwsAsync(() =>

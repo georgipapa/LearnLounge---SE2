@@ -1,11 +1,10 @@
 const test = require('ava');
-const got = require('got');
 const { setupServer, teardownServer } = require('./testHelper');
 
 test.before(setupServer);
 test.after.always(teardownServer);
 
-// Test case 1: Successful report submission
+// Test: Successful report submission
 test.serial('POST /report should handle report submission successfully', async (t) => {
     const { statusCode } = await t.context.got.post('report', {
         headers: { api_key: 'your-valid-api-key' },  // Send the API key in headers for authentication
@@ -21,7 +20,7 @@ test.serial('POST /report should handle report submission successfully', async (
     t.is(statusCode, 200);
 });
 
-// Test case 2: Missing 'typeOfReport' field should return a 400 error
+// Test: Missing 'typeOfReport' field should return a 400 error
 test.serial('POST /report with missing typeOfReport should return 400', async (t) => {
     // Payload without the 'typeOfReport' field
     const payload = {
@@ -43,7 +42,7 @@ test.serial('POST /report with missing typeOfReport should return 400', async (t
     t.is(error.response.body.message, 'request.body should have required property \'typeOfReport\'');
 });
 
-// Test case 3: Invalid email format should return a 400 error
+// Test: Invalid email format should return a 400 error
 test.serial('POST /report with invalid email format should return 400', async (t) => {
     // Payload with an invalid email format
     const payload = {
@@ -66,7 +65,7 @@ test.serial('POST /report with invalid email format should return 400', async (t
     t.is(error.response.body.message, 'Invalid email format');
 });
 
-// Test case 4: Missing API key should return a 401 error
+// Test: Missing API key should return a 401 error
 test.serial('POST /report without API key should return 401', async (t) => {
     const payload = {
         typeOfReport: 'Bug Report',
@@ -87,7 +86,7 @@ test.serial('POST /report without API key should return 401', async (t) => {
     t.is(error.response.body.message, "'api_key' header required");
 });
 
-// Test case 5: Empty fields should return a 400 error
+// Test: Empty fields should return a 400 error
 test.serial('POST /report with empty fields should return 400', async (t) => {
     // Payload with empty fields
     const payload = {
@@ -110,7 +109,7 @@ test.serial('POST /report with empty fields should return 400', async (t) => {
     t.is(error.response.body.message, 'Missing required fields: typeOfReport, name, message, or email');
 });
 
-// Test case 6: Overly long fields should return a 400 error
+// Test: Overly long fields should return a 400 error
 test.serial('POST /report with overly long fields should return 400', async (t) => {
     // Payload with fields that exceed the length limit
     const payload = {

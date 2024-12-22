@@ -1,6 +1,5 @@
 const test = require('ava');
-const http = require('http');
-const { respondWithCode, writeJson } = require('../utils/writer'); // Adjust the path to your writer.js file
+const { respondWithCode, writeJson } = require('../utils/writer');
 
 // Helper function to mock an HTTP response
 function mockResponse() {

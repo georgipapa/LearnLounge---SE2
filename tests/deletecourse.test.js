@@ -1,5 +1,4 @@
 const test = require('ava');
-const got = require('got');
 const { setupServer, teardownServer } = require('./testHelper');
 
 test.before(setupServer);
@@ -9,7 +8,7 @@ test.after.always(teardownServer);
 test.serial('DELETE /courses/teaching/:courseId/edit - Successfully delete your course', async (t) => {
     const { statusCode } = await t.context.got.delete('courses/teaching/13/edit', {
         headers: {
-            api_key: 'api_key', // API key header
+            api_key: 'api_key',
         },
     });
 
