@@ -27,15 +27,13 @@
     "oas3-tools": "^2.2.3",
     "path-to-regexp": "^8.0.0",
     "qs": "^6.13.1",
-    "patch-package": "^8.0.0",
-    "postinstall-postinstall": "^2.1.0"
+    "patch-package": "^8.0.0"
   },
   "devDependencies": {
     "ava": "^5.3.1",
     "c8": "^8.0.1",
     "cypress": "^13.17.0",
     "got": "^11.8.3",
-    "patch-package": "^8.0.0",
     "postinstall-postinstall": "^2.1.0"
   }
 }
